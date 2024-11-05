@@ -233,7 +233,7 @@ export default {
                 });
         },
         fetchPercentage(value,sum){
-            return sum/100*value;
+            return value/sum*100;
         },
         fetchPosts() {
             this.axios

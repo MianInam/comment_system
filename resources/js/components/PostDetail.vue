@@ -33,11 +33,16 @@
                                                         <li v-for="comment in post.comments">
                                                             <div class="timeline-panel">
 
-                                                                <div class="media-body">
+                                                                <div class="media-body d-flex justify-content-between">
+                                                                    <div style="flex: 1">
                                                                     <h5 class="mb-1">{{comment.user.name}} <small class="text-muted">29 July 2020</small></h5>
                                                                     <p class="mb-1">{{comment.comment}}</p>
-<!--                                                                    <a href="#" class="btn btn-primary btn-xxs shadow">Reply</a>-->
+                                                                    </div>
+                                                                    <div>
+                                                                    <a class="btn btn-primary btn-xxs shadow"
+                                                                       :style="{ backgroundColor: getStatusColor(comment.status) }">{{comment.status}}</a>
 <!--                                                                    <a href="#" class="btn btn-outline-danger btn-xxs">Delete</a>-->
+                                                                    </div>
                                                                 </div>
 <!--                                                                <div class="dropdown">-->
 <!--                                                                    <button type="button" class="btn btn-primary light sharp" data-bs-toggle="dropdown">-->
@@ -102,12 +107,69 @@ export default {
         };
     },
     methods: {
+        getStatusColor(status) {
+            if (status === 'positive') {
+                return '#00e272';
+            } else if (status === 'negative') {
+                return '#fe6a35';
+            } else if (status === 'neutral') {
+                return '#a6a6a6';
+            } else {
+                return '#000'; // default color if status doesn't match
+            }
+        },
         formatDate(dateString) {
             const date = new Date(dateString);
             const day = date.getUTCDate();
             const month = date.toLocaleString('en-GB', { month: 'short', timeZone: 'UTC' });
             const year = date.getUTCFullYear();
             return `${day} ${month} ${year}`;
+        },
+        fetchSentimentsForOne(comments){
+            this.axios
+                .post(this.$sentimentsBaseUrl + "/analyze_comments", {comments: comments}, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((response) => {
+                    console.log("Response:", response.data.data.comments);
+                    this.post.comments = response.data.data.comments
+
+                    // this.posts.map((post) => {
+                    //     let sum = post.total.positive + post.total.negative + post.total.neutral
+                    //     this.chart(post.id, this.fetchPercentage(post.total.positive,sum),
+                    //         this.fetchPercentage(post.total.negative,sum),
+                    //         this.fetchPercentage(post.total.neutral,sum))
+                    // })
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    // Handle error response
+                });
+        },
+        fetchSentiments(comments){
+            this.axios
+                .post(this.$sentimentsBaseUrl + "/analyze_comments", {comments: comments}, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then((response) => {
+                    console.log("Response:", response.data.data.comments);
+                    this.post.comments = response.data.data.comments
+
+                    // this.posts.map((post) => {
+                    //     let sum = post.total.positive + post.total.negative + post.total.neutral
+                    //     this.chart(post.id, this.fetchPercentage(post.total.positive,sum),
+                    //         this.fetchPercentage(post.total.negative,sum),
+                    //         this.fetchPercentage(post.total.neutral,sum))
+                    // })
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    // Handle error response
+                });
         },
         addComment(){
             this.errors = {}
@@ -130,7 +192,9 @@ export default {
                         showConfirmButton: false,
                     });
                     console.log(response.data.data)
-                    this.post.comments.unshift(response.data.data)
+                    // this.fetchSentimentsForOne(response.data.data)
+                    this.post.comments.push(response.data.data)
+                    this.fetchSentiments(this.post.comments)
                     this.comment = ''
                 })
                 .catch((error) => {
@@ -160,6 +224,7 @@ export default {
                 .then((response) => {
                     console.log(response)
                     this.post = response.data.data
+                    this.fetchSentiments(this.post.comments)
                 })
                 .catch((error) => {
                     console.log(error.response.data.status);
