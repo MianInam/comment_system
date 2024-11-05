@@ -20,6 +20,7 @@ app.use(router);
 app.use(ToastPlugin);
 app.use(VueSweetalert2);
 app.config.globalProperties.$baseUrl = window.location.origin;
+app.config.globalProperties.$sentimentsBaseUrl = "http://127.0.0.1:5000";
 app.config.globalProperties.$imageBaseUrl = window.location.origin+'/storage/';
 
 app.mixin({

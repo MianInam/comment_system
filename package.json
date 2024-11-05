@@ -12,6 +12,8 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "highcharts": "^11.4.8",
+        "highcharts-vue": "^2.0.1",
         "vue": "^3.5.12",
         "vue-axios": "^3.5.2",
         "vue-router": "^4.4.5",

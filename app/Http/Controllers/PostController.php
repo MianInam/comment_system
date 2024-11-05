@@ -15,7 +15,7 @@ class PostController extends Controller
         try {
             $validators = Validator($request->all(), [
                 'title' => 'required|max:250',
-                'content' => 'required|max:500',
+                'content' => 'required|max:1500',
             ]);
             if ($validators->fails()) {
                 return $this->sendError($validators->messages(), null);
@@ -33,7 +33,7 @@ class PostController extends Controller
     public function index()
     {
         try {
-            $post = Post::orderBy('id','DESC')->get();
+            $post = Post::with('comments')->orderBy('id','DESC')->get();
             return $this->sendSuccess('success', $post);
         }
         catch (\Exception $e) {
