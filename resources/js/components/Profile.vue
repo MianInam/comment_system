@@ -87,7 +87,7 @@
                                                             <input :type="inputType" id="dz-password"
                                                                    class="form-control" v-model="password"
                                                                    placeholder="Enter password">
-                                                            <span style="cursor: pointer;" class="eye"
+                                                            <span style="cursor: pointer;top: 55px;" class="eye"
                                                                   @click="togglePasswordVisibility">
 
 												<i v-show="!showPassword" class="fa fa-eye-slash"></i>
@@ -108,7 +108,7 @@
                                                                    id="confirm_password" class="form-control"
                                                                    style="border-color:#C2C2C2;"
                                                                    placeholder="Enter password">
-                                                            <span style="cursor: pointer;" class="eye"
+                                                            <span style="cursor: pointer;top: 55px;" class="eye"
                                                                   @click="togglePasswordVisibility">
 
 												<i v-show="!showPassword" class="fa fa-eye-slash"></i>

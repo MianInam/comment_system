@@ -42,6 +42,23 @@
                                                         <a href="javascript:void()" class="btn btn-primary"
                                                            @click.prevent="addPost">Post</a>
                                                     </div>
+
+<!--                                                    <div class="col-xl-12 col-lg-12">-->
+
+                                                        <div class="row align-items-center d-flex justify-content-end">
+                                                            <div class="col-auto my-1">
+                                                                <label class="me-sm-2">Sort By</label>
+                                                                <select v-model="sortBy" class="me-sm-2 default-select"
+                                                                        id="inlineFormCustomSelect">
+                                                                    <option value="">Select One</option>
+                                                                    <option value="positive">Positive</option>
+                                                                    <option value="negative">Negative</option>
+                                                                    <option value="neutral">Neutral</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+<!--                                                    </div>-->
                                                     <div v-for="post in posts"
                                                          class="profile-uoloaded-post border-bottom-1">
                                                         <div class="d-flex justify-content-between align-items-center">
@@ -90,11 +107,29 @@ export default {
                 title: '',
                 content: '',
             },
+            sortBy:"",
             errors: {},
             posts: {}
         };
     },
+    watch:{
+        "sortBy":function (value){
+            this.sortPosts(value)
+        }
+    },
     methods: {
+        sortPosts(value) {
+            this.posts.sort((a, b) => b.total[value] - a.total[value]);
+
+            this.$nextTick(() => {
+                this.posts.forEach(post => {
+                    let sum = post.total.positive + post.total.negative + post.total.neutral
+                    this.chart(post.id, this.fetchPercentage(post.total.positive, sum),
+                        this.fetchPercentage(post.total.negative, sum),
+                        this.fetchPercentage(post.total.neutral, sum))
+                });
+            });
+        },
         chart(id, positive, negative, neutral) {
             console.log(positive, negative, neutral, id)
             Highcharts.chart('container-' + id, {
@@ -186,9 +221,9 @@ export default {
                         showConfirmButton: false,
                     });
                     const total = {
-                        positive:0,
-                        negative:0,
-                        neutral:0
+                        positive: 0,
+                        negative: 0,
+                        neutral: 0
                     }
                     location.reload()
                     this.post.title = ''
@@ -222,9 +257,9 @@ export default {
 
                     this.posts.map((post) => {
                         let sum = post.total.positive + post.total.negative + post.total.neutral
-                        this.chart(post.id, this.fetchPercentage(post.total.positive,sum),
-                            this.fetchPercentage(post.total.negative,sum),
-                            this.fetchPercentage(post.total.neutral,sum))
+                        this.chart(post.id, this.fetchPercentage(post.total.positive, sum),
+                            this.fetchPercentage(post.total.negative, sum),
+                            this.fetchPercentage(post.total.neutral, sum))
                     })
                 })
                 .catch((error) => {
@@ -232,8 +267,8 @@ export default {
                     // Handle error response
                 });
         },
-        fetchPercentage(value,sum){
-            return value/sum*100;
+        fetchPercentage(value, sum) {
+            return (value / sum) * 100;
         },
         fetchPosts() {
             this.axios
@@ -248,12 +283,6 @@ export default {
                     console.log(response)
                     this.posts = response.data.data
                     this.fetchSentiments(this.posts)
-                    setTimeout((e) => {
-                        // this.posts.map((post) => {
-                        //     this.fetchSentiments(post.comments)
-                        //     this.chart(post.id)
-                        // })
-                    }, 1000)
                     this.Loader = false
                 })
                 .catch((error) => {

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="nav-header">
+    <div class="nav-header d-flex justify-content-center align-items-center">
 
             <h3>Comment System</h3>
 

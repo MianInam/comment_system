@@ -15,13 +15,23 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="post-details">
-                                    <h3 class="mb-2 text-black">{{post.title}}</h3>
-                                    <ul class="mb-4 post-meta d-flex flex-wrap">
-                                        <li class="post-author me-3">By Admin</li>
-                                        <li class="post-date me-3"><i class="far fa-calendar-plus me-2"></i>{{formatDate(post.created_at)}}</li>
-                                        <li class="post-comment"><i class="far fa-comment me-2"></i>{{post.comments?.length}}</li>
-                                    </ul>
-                                    <p>{{post.content}}</p>
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h3 class="mb-2 text-black">{{ post.title }}</h3>
+                                            <ul class="mb-4 post-meta d-flex flex-wrap">
+                                                <li class="post-author me-3">By Admin</li>
+                                                <li class="post-date me-3"><i
+                                                    class="far fa-calendar-plus me-2"></i>{{ formatDate(post.created_at) }}
+                                                </li>
+                                                <li class="post-comment"><i
+                                                    class="far fa-comment me-2"></i>{{ post.comments?.length }}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div id="container"></div>
+                                    </div>
+
+                                    <p>{{ post.content }}</p>
                                     <div class="col-xl-12 col-xxl-12 col-lg-12">
                                         <div v-if="post.comments?.length > 0" class="card border-0 pb-0">
                                             <div class="card-header border-0 pb-0">
@@ -35,24 +45,25 @@
 
                                                                 <div class="media-body d-flex justify-content-between">
                                                                     <div style="flex: 1">
-                                                                    <h5 class="mb-1">{{comment.user.name}} <small class="text-muted">29 July 2020</small></h5>
-                                                                    <p class="mb-1">{{comment.comment}}</p>
+                                                                        <h5 class="mb-1">{{ comment.user.name }} <small
+                                                                            class="text-muted">29 July 2020</small></h5>
+                                                                        <p class="mb-1">{{ comment.comment }}</p>
                                                                     </div>
                                                                     <div>
-                                                                    <a class="btn btn-primary btn-xxs shadow"
-                                                                       :style="{ backgroundColor: getStatusColor(comment.status) }">{{comment.status}}</a>
-<!--                                                                    <a href="#" class="btn btn-outline-danger btn-xxs">Delete</a>-->
+                                                                        <a class="btn text-white btn-xxs shadow"
+                                                                           :style="{ backgroundColor: getStatusColor(comment.status) }">{{ comment.status }}</a>
+                                                                        <!--                                                                    <a href="#" class="btn btn-outline-danger btn-xxs">Delete</a>-->
                                                                     </div>
                                                                 </div>
-<!--                                                                <div class="dropdown">-->
-<!--                                                                    <button type="button" class="btn btn-primary light sharp" data-bs-toggle="dropdown">-->
-<!--                                                                        <svg width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><circle fill="#000000" cx="5" cy="12" r="2"/><circle fill="#000000" cx="12" cy="12" r="2"/><circle fill="#000000" cx="19" cy="12" r="2"/></g></svg>-->
-<!--                                                                    </button>-->
-<!--                                                                    <div class="dropdown-menu dropdown-menu-end">-->
-<!--                                                                        <a class="dropdown-item" href="#">Edit</a>-->
-<!--                                                                        <a class="dropdown-item" href="#">Delete</a>-->
-<!--                                                                    </div>-->
-<!--                                                                </div>-->
+                                                                <!--                                                                <div class="dropdown">-->
+                                                                <!--                                                                    <button type="button" class="btn btn-primary light sharp" data-bs-toggle="dropdown">-->
+                                                                <!--                                                                        <svg width="18px" height="18px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"/><circle fill="#000000" cx="5" cy="12" r="2"/><circle fill="#000000" cx="12" cy="12" r="2"/><circle fill="#000000" cx="19" cy="12" r="2"/></g></svg>-->
+                                                                <!--                                                                    </button>-->
+                                                                <!--                                                                    <div class="dropdown-menu dropdown-menu-end">-->
+                                                                <!--                                                                        <a class="dropdown-item" href="#">Edit</a>-->
+                                                                <!--                                                                        <a class="dropdown-item" href="#">Delete</a>-->
+                                                                <!--                                                                    </div>-->
+                                                                <!--                                                                </div>-->
                                                             </div>
                                                         </li>
 
@@ -67,18 +78,24 @@
                                         </div>
                                     </div>
                                     <div class="comment-respond" id="respond">
-                                        <h4 class="comment-reply-title text-primary mb-3" id="reply-title">Leave a Comment </h4>
+                                        <h4 class="comment-reply-title text-primary mb-3" id="reply-title">Leave a
+                                            Comment </h4>
                                         <form class="comment-form" id="commentform" method="post">
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
-                                                        <label for="comment" class="text-black font-w600">Comment</label>
-                                                        <textarea rows="4" class="form-control" v-model="comment" name="comment" placeholder="Comment" id="comment"></textarea>
+                                                        <label for="comment"
+                                                               class="text-black font-w600">Comment</label>
+                                                        <textarea rows="4" class="form-control" v-model="comment"
+                                                                  name="comment" placeholder="Comment"
+                                                                  id="comment"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
-                                                        <input type="submit" value="Post Comment" @click.prevent="addComment" class="submit btn btn-primary" id="submit" name="submit">
+                                                        <input type="submit" value="Post Comment"
+                                                               @click.prevent="addComment"
+                                                               class="submit btn btn-primary" id="submit" name="submit">
                                                     </div>
                                                 </div>
                                             </div>
@@ -95,18 +112,90 @@
     </Nav>
 </template>
 <script>
+import HighchartsVue from 'highcharts-vue';
+import Highcharts from 'highcharts';
 
 export default {
+    components: {highcharts: HighchartsVue.component},
     data() {
         return {
             errors: {},
             Loader: false,
-            id:'',
-            post:{},
-            comment:""
+            id: '',
+            post: {},
+            comment: ""
         };
     },
     methods: {
+        chart(positive, negative, neutral) {
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'pie',
+                    height: 200, // Set a smaller height
+                    width: 200, // Set a smaller width
+                    custom: {},
+                    events: {
+                        render() {
+                            //
+                        }
+                    }
+                },
+                title: {
+                    text: '' // Set an empty title
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+
+
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>'
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    series: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        borderRadius: 2,
+                        dataLabels: [{
+                            enabled: false,
+                            distance: 20,
+                            format: '{point.name}'
+                        }, {
+                            enabled: true,
+                            distance: -17,
+                            format: '{point.percentage:.0f}%',
+                            style: {
+                                fontSize: '15px'
+                            }
+                        }],
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    colorByPoint: true,
+                    innerSize: '50%',
+                    data: [{
+                        name: 'Positive',
+                        y: positive,
+                        color: "#00e272"
+                    }, {
+                        name: 'Negative',
+                        y: negative,
+                        color: "#fe6a35"
+                    }, {
+                        name: 'Neutral',
+                        y: neutral,
+                        color: "#a6a6a6"
+                    }]
+                }]
+            });
+
+        },
         getStatusColor(status) {
             if (status === 'positive') {
                 return '#00e272';
@@ -121,11 +210,11 @@ export default {
         formatDate(dateString) {
             const date = new Date(dateString);
             const day = date.getUTCDate();
-            const month = date.toLocaleString('en-GB', { month: 'short', timeZone: 'UTC' });
+            const month = date.toLocaleString('en-GB', {month: 'short', timeZone: 'UTC'});
             const year = date.getUTCFullYear();
             return `${day} ${month} ${year}`;
         },
-        fetchSentimentsForOne(comments){
+        fetchSentiments(comments) {
             this.axios
                 .post(this.$sentimentsBaseUrl + "/analyze_comments", {comments: comments}, {
                     headers: {
@@ -133,9 +222,14 @@ export default {
                     },
                 })
                 .then((response) => {
-                    console.log("Response:", response.data.data.comments);
+                    console.log("Response:", response.data.data.total);
                     this.post.comments = response.data.data.comments
-
+                    let sum = response.data.data.total.positive +
+                        response.data.data.total.negative +
+                        response.data.data.total.neutral
+                    this.chart(this.fetchPercentage(response.data.data.total.positive,sum),
+                        this.fetchPercentage(response.data.data.total.negative,sum),
+                        this.fetchPercentage(response.data.data.total.neutral,sum))
                     // this.posts.map((post) => {
                     //     let sum = post.total.positive + post.total.negative + post.total.neutral
                     //     this.chart(post.id, this.fetchPercentage(post.total.positive,sum),
@@ -148,33 +242,13 @@ export default {
                     // Handle error response
                 });
         },
-        fetchSentiments(comments){
-            this.axios
-                .post(this.$sentimentsBaseUrl + "/analyze_comments", {comments: comments}, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                })
-                .then((response) => {
-                    console.log("Response:", response.data.data.comments);
-                    this.post.comments = response.data.data.comments
-
-                    // this.posts.map((post) => {
-                    //     let sum = post.total.positive + post.total.negative + post.total.neutral
-                    //     this.chart(post.id, this.fetchPercentage(post.total.positive,sum),
-                    //         this.fetchPercentage(post.total.negative,sum),
-                    //         this.fetchPercentage(post.total.neutral,sum))
-                    // })
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                    // Handle error response
-                });
+        fetchPercentage(value,sum){
+            return value/sum*100;
         },
-        addComment(){
+        addComment() {
             this.errors = {}
             this.axios
-                .post(this.$baseUrl + "/api/comment/create", {post_id:this.id,comment:this.comment}, {
+                .post(this.$baseUrl + "/api/comment/create", {post_id: this.id, comment: this.comment}, {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
                             "Content-Type": "application/json",
@@ -212,9 +286,9 @@ export default {
                     }
                 });
         },
-        fetchPostDetail(id){
+        fetchPostDetail(id) {
             this.axios
-                .get(this.$baseUrl + "/api/post/show/"+id, {
+                .get(this.$baseUrl + "/api/post/show/" + id, {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem("token")}`,
                             "Content-Type": "application/json",
@@ -238,7 +312,7 @@ export default {
         },
     },
     mounted() {
-        this.id =this.$route.params.id;
+        this.id = this.$route.params.id;
         this.fetchPostDetail(this.id)
     }
 }
