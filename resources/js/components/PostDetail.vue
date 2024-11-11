@@ -46,7 +46,7 @@
                                                                 <div class="media-body d-flex justify-content-between">
                                                                     <div style="flex: 1">
                                                                         <h5 class="mb-1">{{ comment.user.name }} <small
-                                                                            class="text-muted">29 July 2020</small></h5>
+                                                                            class="text-muted">{{ formatDate(comment.created_at) }}</small></h5>
                                                                         <p class="mb-1">{{ comment.comment }}</p>
                                                                     </div>
                                                                     <div>
